@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#070b09">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<title>চ্যালেঞ্জ - নন স্মোকিং | নো ফ্যাপ | নো পর্ণ</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+:root{
+  --bg:#070b09;--bg2:#0c1410;--card:#111d16;--card2:#162419;
+  --fg:#e4efe8;--fg2:#94b3a1;--fg3:#5a7d68;
+  --accent:#10b981;--accent2:#34d399;--accent-g:rgba(16,185,129,.25);
+  --red:#ef4444;--red-g:rgba(239,68,68,.25);
+  --amber:#f59e0b;--amber-g:rgba(245,158,11,.25);
+  --violet:#a78bfa;--violet-g:rgba(167,139,250,.25);
+  --border:#1a2e22;--radius:14px;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{height:100%;overflow:hidden}
+body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--fg);
+  height:100%;overflow:hidden;position:relative}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--fg3);border-radius:4px}
+
+/* ব্যাকগ্রাউন্ড আলো */
+.bg-glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);
+  width:400px;height:400px;background:radial-gradient(circle,var(--accent-g) 0%,transparent 70%);
+  pointer-events:none;z-index:0;opacity:.5;animation:glowPulse 6s ease-in-out infinite}
+@keyframes glowPulse{0%,100%{opacity:.3;transform:translateX(-50%) scale(1)}50%{opacity:.6;transform:translateX(-50%) scale(1.15)}}
+
+/* অনবোর্ডিং */
+#onboarding{position:fixed;inset:0;z-index:1000;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;overflow-y:auto}
+.onb-step{display:none;flex-direction:column;align-items:center;text-align:center;
+  width:100%;max-width:380px;animation:fadeUp .5s ease}
+.onb-step.active{display:flex}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.onb-logo{width:90px;height:90px;border-radius:24px;
+  background:linear-gradient(135deg,var(--accent),#059669);
+  display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff;
+  margin-bottom:20px;box-shadow:0 8px 32px var(--accent-g)}
+.onb-title{font-size:26px;font-weight:700;margin-bottom:10px;line-height:1.3}
+.onb-desc{font-size:15px;color:var(--fg2);line-height:1.6;margin-bottom:28px}
+.onb-chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:28px;width:100%}
+.onb-chip{padding:12px 20px;border-radius:50px;border:2px solid var(--border);
+  background:var(--card);color:var(--fg2);font-size:14px;font-weight:500;
+  cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px;user-select:none}
+.onb-chip.selected{border-color:var(--accent);background:var(--accent-g);color:var(--accent2)}
+.onb-chip i{font-size:16px}
+.onb-input{width:100%;padding:14px 18px;border-radius:var(--radius);
+  border:2px solid var(--border);background:var(--card);color:var(--fg);
+  font-size:16px;font-family:inherit;outline:none;margin-bottom:14px;transition:border-color .25s}
+.onb-input:focus{border-color:var(--accent)}
+.onb-input::placeholder{color:var(--fg3)}
+.btn{padding:14px 32px;border-radius:50px;border:none;font-size:16px;font-weight:600;
+  font-family:inherit;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#059669);color:#fff;
+  box-shadow:0 4px 20px var(--accent-g)}
+.btn-primary:active{transform:scale(.96)}
+.btn-ghost{background:transparent;color:var(--fg2);border:2px solid var(--border)}
+.btn-ghost:active{border-color:var(--fg3)}
+.btn-sm{padding:10px 20px;font-size:13px}
+.btn-danger{background:linear-gradient(135deg,var(--red),#dc2626);color:#fff;box-shadow:0 4px 20px var(--red-g)}
+.onb-row{display:flex;gap:12px;width:100%;max-width:200px;justify-content:center}
+
+/* মেইন অ্যাপ */
+#app{display:none;height:100%;flex-direction:column;position:relative;z-index:1}
+.app-header{padding:calc(var(--safe-t) + 12px) 20px 12px;
+  background:linear-gradient(180deg,var(--bg) 60%,transparent);position:relative;z-index:10}
+.app-header h1{font-size:18px;font-weight:600}
+.app-header p{font-size:12px;color:var(--fg3);margin-top:2px}
+.app-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 16px 100px;
+  scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+
+/* পেজ সেকশন */
+.page{display:none;animation:fadeUp .4s ease}
+.page.active{display:block}
+
+/* বটম নেভ */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(7,11,9,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);padding:6px 8px calc(var(--safe-b) + 6px);
+  display:flex;justify-content:space-around}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:6px 12px;border-radius:12px;cursor:pointer;transition:all .25s;
+  color:var(--fg3);font-size:10px;font-weight:500;min-width:56px}
+.nav-item i{font-size:18px;transition:all .25s}
+.nav-item.active{color:var(--accent)}
+.nav-item.active i{transform:scale(1.15)}
+
+/* হোম পেজ */
+.streak-ring-wrap{display:flex;flex-direction:column;align-items:center;margin:10px 0 24px}
+.streak-ring{position:relative;width:200px;height:200px}
+.streak-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.streak-ring circle{fill:none;stroke-width:8;stroke-linecap:round}
+.ring-bg{stroke:var(--card2)}
+.ring-fill{stroke:var(--accent);transition:stroke-dashoffset 1s ease;filter:drop-shadow(0 0 8px var(--accent-g))}
+.streak-center{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center}
+.streak-num{font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:700;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.streak-label{font-size:13px;color:var(--fg3);margin-top:2px}
+.streak-sub{font-size:11px;color:var(--fg3);font-family:'JetBrains Mono',monospace;margin-top:4px}
+
+/* চ্যালেঞ্জ কার্ড */
+.ch-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.ch-card{display:flex;align-items:center;gap:14px;padding:14px 16px;
+  border-radius:var(--radius);background:var(--card);border:1px solid var(--border);
+  cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.ch-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px}
+.ch-card.smoking::before{background:var(--red)}
+.ch-card.masturbation::before{background:var(--amber)}
+.ch-card.porn::before{background:var(--violet)}
+.ch-card:active{transform:scale(.98);background:var(--card2)}
+.ch-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;
+  justify-content:center;font-size:18px;flex-shrink:0}
+.ch-icon.smoking{background:var(--red-g);color:var(--red)}
+.ch-icon.masturbation{background:var(--amber-g);color:var(--amber)}
+.ch-icon.porn{background:var(--violet-g);color:var(--violet)}
+.ch-info{flex:1;min-width:0}
+.ch-name{font-size:14px;font-weight:600}
+.ch-streak{font-size:12px;color:var(--fg3);margin-top:2px;font-family:'JetBrains Mono',monospace}
+.ch-arrow{color:var(--fg3);font-size:12px}
+
+/* সাশ্রয় কার্ড */
+.save-card{padding:18px;border-radius:var(--radius);background:var(--card);
+  border:1px solid var(--border);margin-bottom:20px}
+.save-card h3{font-size:13px;color:var(--fg3);margin-bottom:12px;font-weight:500}
+.save-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.save-item{padding:14px;border-radius:12px;background:var(--bg2);text-align:center}
+.save-val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--accent2)}
+.save-lbl{font-size:11px;color:var(--fg3);margin-top:4px}
+
+/* কোট কার্ড */
+.quote-card{padding:18px;border-radius:var(--radius);background:var(--card);
+  border:1px solid var(--border);margin-bottom:16px;position:relative}
+.quote-card::before{content:'\201C';position:absolute;top:8px;left:14px;
+  font-size:48px;color:var(--accent);opacity:.3;font-family:serif;line-height:1}
+.quote-text{font-size:14px;line-height:1.7;color:var(--fg2);padding-left:8px;font-style:italic}
+.quote-author{font-size:12px;color:var(--fg3);margin-top:8px;text-align:right}
+
+/* প্রগ্রেস পেজ */
+.section-title{font-size:16px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-title i{color:var(--accent);font-size:14px}
+.timeline{position:relative;padding-left:28px;margin-bottom:24px}
+.timeline::before{content:'';position:absolute;left:9px;top:8px;bottom:8px;width:2px;
+  background:var(--border)}
+.tl-item{position:relative;margin-bottom:20px;animation:fadeUp .4s ease both}
+.tl-dot{position:absolute;left:-28px;top:4px;width:20px;height:20px;border-radius:50%;
+  border:2px solid var(--border);background:var(--bg);display:flex;align-items:center;
+  justify-content:center;font-size:9px;transition:all .3s}
+.tl-item.done .tl-dot{border-color:var(--accent);background:var(--accent);color:#fff}
+.tl-item.next .tl-dot{border-color:var(--accent);animation:dotPulse 2s infinite}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 var(--accent-g)}50%{box-shadow:0 0 0 8px transparent}}
+.tl-title{font-size:14px;font-weight:600}
+.tl-item.done .tl-title{color:var(--accent2)}
+.tl-desc{font-size:12px;color:var(--fg3);margin-top:3px;line-height:1.5}
+.tl-item.locked{opacity:.4}
+
+/* জার্নাল পেজ */
+.journal-date{font-size:13px;color:var(--fg3);margin-bottom:14px;
+  font-family:'JetBrains Mono',monospace}
+.mood-selector{display:flex;gap:10px;margin-bottom:16px;justify-content:center}
+.mood-btn{width:48px;height:48px;border-radius:50%;border:2px solid var(--border);
+  background:var(--card);font-size:20px;cursor:pointer;transition:all .25s;
+  display:flex;align-items:center;justify-content:center}
+.mood-btn.selected{border-color:var(--accent);background:var(--accent-g);transform:scale(1.15)}
+.journal-ta{width:100%;min-height:120px;padding:14px 16px;border-radius:var(--radius);
+  border:2px solid var(--border);background:var(--card);color:var(--fg);
+  font-size:14px;font-family:inherit;outline:none;resize:vertical;line-height:1.7;transition:border-color .25s}
+.journal-ta:focus{border-color:var(--accent)}
+.journal-ta::placeholder{color:var(--fg3)}
+.journal-actions{display:flex;gap:10px;margin-top:12px;justify-content:flex-end}
+.journal-entries{margin-top:24px}
+.je-item{padding:14px 16px;border-radius:var(--radius);background:var(--card);
+  border:1px solid var(--border);margin-bottom:10px}
+.je-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.je-date{font-size:11px;color:var(--fg3);font-family:'JetBrains Mono',monospace}
+.je-mood{font-size:18px}
+.je-text{font-size:13px;color:var(--fg2);line-height:1.6}
+.je-delete{background:none;border:none;color:var(--fg3);cursor:pointer;font-size:12px;padding:4px}
+.je-delete:active{color:var(--red)}
+
+/* হেল্প পেজ */
+.emergency-btn{width:140px;height:140px;border-radius:50%;border:4px solid var(--red);
+  background:radial-gradient(circle,rgba(239,68,68,.2),transparent);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;margin:10px auto 24px;position:relative;transition:all .25s;
+  animation:emergencyPulse 2s ease-in-out infinite}
+@keyframes emergencyPulse{0%,100%{box-shadow:0 0 0 0 var(--red-g)}50%{box-shadow:0 0 0 16px transparent}}
+.emergency-btn:active{transform:scale(.92)}
+.emergency-btn i{font-size:32px;color:var(--red);margin-bottom:6px}
+.emergency-btn span{font-size:13px;font-weight:600;color:var(--red)}
+.help-section{margin-bottom:20px}
+.harm-card{padding:14px 16px;border-radius:var(--radius);background:var(--card);
+  border:1px solid var(--border);margin-bottom:10px;border-left:3px solid var(--red)}
+.harm-card p{font-size:13px;color:var(--fg2);line-height:1.7}
+.harm-card .harm-tag{font-size:10px;color:var(--red);font-weight:600;
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.motiv-card{padding:16px;border-radius:var(--radius);background:var(--card);
+  border:1px solid var(--border);margin-bottom:10px}
+.motiv-card p{font-size:14px;color:var(--fg2);line-height:1.7;font-style:italic}
+.motiv-card .motiv-author{font-size:11px;color:var(--fg3);margin-top:8px;text-align:right}
+.breathe-wrap{display:flex;flex-direction:column;align-items:center;margin:16px 0}
+.breathe-circle{width:100px;height:100px;border-radius:50%;
+  border:3px solid var(--accent);display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:var(--accent2);font-weight:600;transition:all .1s}
+.breathe-circle.inhale{animation:breatheIn 4s ease-in-out forwards}
+.breathe-circle.hold{animation:breatheHold 4s ease-in-out forwards}
+.breathe-circle.exhale{animation:breatheOut 4s ease-in-out forwards}
+@keyframes breatheIn{from{transform:scale(1);border-color:var(--accent)}to{transform:scale(1.5);border-color:var(--accent2)}}
+@keyframes breatheHold{from{transform:scale(1.5)}to{transform:scale(1.5)}}
+@keyframes breatheOut{from{transform:scale(1.5);border-color:var(--accent2)}to{transform:scale(1);border-color:var(--accent)}}
+
+/* চ্যালেঞ্জ ডিটেইল মোডাল */
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.7);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal-sheet{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:480px;
+  max-height:85vh;overflow-y:auto;padding:20px 20px calc(var(--safe-b) + 20px);
+  animation:sheetUp .35s ease}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;border-radius:4px;background:var(--fg3);
+  margin:0 auto 16px;opacity:.5}
+.modal-title{font-size:20px;font-weight:700;margin-bottom:6px}
+.modal-streak-big{font-family:'JetBrains Mono',monospace;font-size:48px;font-weight:700;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.modal-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0}
+.modal-stat{text-align:center;padding:12px 8px;border-radius:12px;background:var(--card)}
+.modal-stat-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--accent2)}
+.modal-stat-lbl{font-size:10px;color:var(--fg3);margin-top:4px}
+.reset-btn{width:100%;padding:12px;border-radius:var(--radius);border:2px solid var(--red);
+  background:transparent;color:var(--red);font-size:14px;font-weight:600;
+  font-family:inherit;cursor:pointer;margin-top:12px;transition:all .25s}
+.reset-btn:active{background:var(--red-g)}
+
+/* ইমার্জেন্সি মোডাল */
+.em-modal{position:fixed;inset:0;z-index:600;background:var(--bg);
+  display:none;flex-direction:column;overflow-y:auto;padding:calc(var(--safe-t) + 20px) 20px calc(var(--safe-b) + 20px)}
+.em-modal.active{display:flex;animation:fadeUp .3s ease}
+.em-close{position:absolute;top:calc(var(--safe-t) + 16px);right:16px;background:none;
+  border:none;color:var(--fg3);font-size:22px;cursor:pointer;padding:8px}
+.em-quote-big{font-size:22px;font-weight:600;line-height:1.5;text-align:center;
+  margin:40px 0 12px;color:var(--fg)}
+.em-author-big{font-size:13px;color:var(--fg3);text-align:center;margin-bottom:32px}
+.em-harm-list{margin-bottom:24px}
+.em-harm{padding:14px;border-radius:var(--radius);background:var(--card);
+  border-left:3px solid var(--red);margin-bottom:10px}
+.em-harm p{font-size:13px;color:var(--fg2);line-height:1.6}
+.em-harm .em-harm-tag{font-size:10px;color:var(--red);font-weight:600;margin-bottom:4px;
+  text-transform:uppercase;letter-spacing:1px}
+.em-tip{padding:14px;border-radius:var(--radius);background:var(--accent-g);
+  border:1px solid rgba(16,185,129,.2);margin-bottom:10px}
+.em-tip p{font-size:13px;color:var(--accent2);line-height:1.6}
+.em-tip .em-tip-tag{font-size:10px;color:var(--accent);font-weight:600;margin-bottom:4px;
+  text-transform:uppercase;letter-spacing:1px}
+.em-refresh{align-self:center;margin-top:8px}
+
+/* টোস্ট */
+.toast{position:fixed;top:calc(var(--safe-t) + 16px);left:50%;transform:translateX(-50%) translateY(-100px);
+  z-index:2000;padding:12px 24px;border-radius:50px;background:var(--card2);
+  border:1px solid var(--border);color:var(--fg);font-size:13px;font-weight:500;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);transition:transform .4s ease;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:var(--accent);color:var(--accent2)}
+.toast.error{border-color:var(--red);color:var(--red)}
+
+/* কনফেটি */
+.confetti-piece{position:fixed;z-index:3000;width:10px;height:10px;pointer-events:none;
+  animation:confettiFall 2.5s ease-in forwards}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0deg)}
+  100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+
+/* ট্যাব ফিল্টার */
+.tab-filters{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
+.tab-filter{padding:8px 16px;border-radius:50px;border:1px solid var(--border);
+  background:transparent;color:var(--fg3);font-size:12px;font-weight:500;
+  cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .25s}
+.tab-filter.active{background:var(--accent-g);border-color:var(--accent);color:var(--accent2)}
+
+/* রেস্পন্সিভ */
+@media(min-width:480px){
+  .app-body{max-width:480px;margin:0 auto}
+  .bottom-nav{max-width:480px;left:50%;transform:translateX(-50%);border-radius:20px 20px 0 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ব্যাকগ্রাউন্ড আলো -->
+<div class="bg-glow"></div>
+
+<!-- টোস্ট -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== অনবোর্ডিং ===== -->
+<div id="onboarding">
+  <!-- ধাপ ১: স্বাগতম -->
+  <div class="onb-step active" data-step="0">
+    <div class="onb-logo"><i class="fas fa-shield-halved"></i></div>
+    <div class="onb-title">তোমার নিয়ন্ত্রণ ফিরে পাও</div>
+    <div class="onb-desc">
+      সিগারেট, মাস্টারবেশন ও পর্ণ থেকে মুক্তির যাত্রা শুরু হোক আজ থেকে।
+      প্রতিটি সেকেন্ড গুনতে থাকো, প্রতিটি দিন জয় করো।
+    </div>
+    <button class="btn btn-primary" onclick="onbNext(1)">শুরু করি <i class="fas fa-arrow-right"></i></button>
+  </div>
+
+  <!-- ধাপ ২: চ্যালেঞ্জ বাছাই -->
+  <div class="onb-step" data-step="1">
+    <div class="onb-title">তোমার চ্যালেঞ্জ বেছে নাও</div>
+    <div class="onb-desc">একাধিক চ্যালেঞ্জ একসাথে নিতে পারো</div>
+    <div class="onb-chips">
+      <div class="onb-chip" data-ch="smoking" onclick="toggleChip(this)">
+        <i class="fas fa-smoking"></i> নন স্মোকিং
+      </div>
+      <div class="onb-chip" data-ch="masturbation" onclick="toggleChip(this)">
+        <i class="fas fa-hand-fist"></i> নো ফ্যাপ
+      </div>
+      <div class="onb-chip" data-ch="porn" onclick="toggleChip(this)">
+        <i class="fas fa-eye-slash"></i> নো পর্ণ
+      </div>
+    </div>
+    <div class="onb-row">
+      <button class="btn btn-ghost btn-sm" onclick="onbNext(0)"><i class="fas fa-arrow-left"></i></button>
+      <button class="btn btn-primary btn-sm" onclick="onbNext(2)">পরবর্তী <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- ধাপ ৩: সিগারেট সেটআপ -->
+  <div class="onb-step" data-step="2">
+    <div class="onb-title">সিগারেট খরচের তথ্য</div>
+    <div class="onb-desc">তোমার সাশ্রয় হিসাব করতে এই তথ্য দরকার</div>
+    <input class="onb-input" id="inp-daily" type="number" placeholder="দৈনিক কতগুলো সিগারেট খেতে?" min="0">
+    <input class="onb-input" id="inp-cost" type="number" placeholder="প্রতিটি সিগারেটের দাম (টাকা)" min="0">
+    <div class="onb-row">
+      <button class="btn btn-ghost btn-sm" onclick="onbNext(1)"><i class="fas fa-arrow-left"></i></button>
+      <button class="btn btn-primary btn-sm" onclick="onbNext(3)">পরবর্তী <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- ধাপ ৪: শুরু -->
+  <div class="onb-step" data-step="3">
+    <div class="onb-logo"><i class="fas fa-rocket"></i></div>
+    <div class="onb-title">তুমি প্রস্তুত</div>
+    <div class="onb-desc">
+      মনে রেখো — ব্যর্থতা মানে শেষ নয়। পড়ে গেলে আবার উঠে দাঁড়াও।
+      এই অ্যাপ তোমার সাথে আছে প্রতিটি মুহূর্তে।
+    </div>
+    <button class="btn btn-primary" onclick="startApp()">
+      <i class="fas fa-play"></i> চ্যালেঞ্জ শুরু
+    </button>
+  </div>
+</div>
+
+<!-- ===== মেইন অ্যাপ ===== -->
+<div id="app">
+  <!-- হেডার -->
+  <header class="app-header">
+    <h1 id="header-title">চ্যালেঞ্জ</h1>
+    <p id="header-sub">তোমার পুনর্জন্মের যাত্রা</p>
+  </header>
+
+  <!-- বডি -->
+  <div class="app-body">
+
+    <!-- হোম পেজ -->
+    <section class="page active" id="page-home">
+      <div class="streak-ring-wrap">
+        <div class="streak-ring">
+          <svg viewBox="0 0 200 200">
+            <circle class="ring-bg" cx="100" cy="100" r="88"/>
+            <circle class="ring-fill" id="ring-fill" cx="100" cy="100" r="88"
+              stroke-dasharray="553" stroke-dashoffset="553"/>
+          </svg>
+          <div class="streak-center">
+            <div class="streak-num" id="streak-num">0</div>
+            <div class="streak-label">দিন</div>
+            <div class="streak-sub" id="streak-sub">00:00:00:00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ch-cards" id="ch-cards"></div>
+
+      <div class="save-card" id="save-card">
+        <h3><i class="fas fa-piggy-bank"></i> তোমার অর্জন</h3>
+        <div class="save-grid">
+          <div class="save-item">
+            <div class="save-val" id="save-money">0</div>
+            <div class="save-lbl">টাকা সাশ্রয়</div>
+          </div>
+          <div class="save-item">
+            <div class="save-val" id="save-cigs">0</div>
+            <div class="save-lbl">সিগারেট এড়ানো</div>
+          </div>
+          <div class="save-item">
+            <div class="save-val" id="save-life">0</div>
+            <div class="save-lbl">মিনিট বাঁচানো</div>
+          </div>
+          <div class="save-item">
+            <div class="save-val" id="save-best">0</div>
+            <div class="save-lbl">সেরা রেকর্ড (দিন)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-card" id="daily-quote">
+        <div class="quote-text" id="quote-text"></div>
+        <div class="quote-author" id="quote-author"></div>
+      </div>
+    </section>
+
+    <!-- প্রগ্রেস পেজ -->
+    <section class="page" id="page-progress">
+      <div class="tab-filters" id="progress-filters"></div>
+      <div class="section-title"><i class="fas fa-flag-checkered"></i> স্বাস্থ্য উন্নতির টাইমলাইন</div>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <!-- জার্নাল পেজ -->
+    <section class="page" id="page-journal">
+      <div class="journal-date" id="journal-date"></div>
+      <div class="mood-selector" id="mood-selector">
+        <div class="mood-btn" data-mood="1" onclick="selectMood(this)">😟</div>
+        <div class="mood-btn" data-mood="2" onclick="selectMood(this)">😐</div>
+        <div class="mood-btn" data-mood="3" onclick="selectMood(this)">🙂</div>
+        <div class="mood-btn" data-mood="4" onclick="selectMood(this)">😊</div>
+        <div class="mood-btn" data-mood="5" onclick="selectMood(this)">🔥</div>
+      </div>
+      <textarea class="journal-ta" id="journal-ta" placeholder="আজ তোমার অনুভূতি কেমন? কী কী করলে? কোনো চ্যালেঞ্জের সম্মুখীন হলে?"></textarea>
+      <div class="journal-actions">
+        <button class="btn btn-primary btn-sm" onclick="saveJournal()"><i class="fas fa-check"></i> সেভ করি</button>
+      </div>
+      <div class="journal-entries" id="journal-entries"></div>
+    </section>
+
+    <!-- হেল্প পেজ -->
+    <section class="page" id="page-help">
+      <div class="emergency-btn" onclick="openEmergency()">
+        <i class="fas fa-hand-holding-heart"></i>
+        <span>জরুরি সাহায্য</span>
+      </div>
+
+      <div class="help-section">
+        <div class="section-title"><i class="fas fa-wind"></i> ব্রিদিং এক্সারসাইজ</div>
+        <div class="breathe-wrap">
+          <div class="breathe-circle" id="breathe-circle">শুরু করো</div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:14px" id="breathe-btn" onclick="toggleBreathe()">
+            <i class="fas fa-play"></i> শুরু
+          </button>
+        </div>
+      </div>
+
+      <div class="help-section">
+        <div class="section-title"><i class="fas fa-triangle-exclamation"></i> ক্ষতিকর দিক</div>
+        <div id="harms-list"></div>
+      </div>
+
+      <div class="help-section">
+        <div class="section-title"><i class="fas fa-quote-left"></i> অনুপ্রেরণামূলক উক্তি</div>
+        <div id="motiv-list"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- বটম নেভ -->
+  <nav class="bottom-nav">
+    <div class="nav-item active" data-page="home" onclick="switchPage('home')">
+      <i class="fas fa-home"></i><span>হোম</span>
+    </div>
+    <div class="nav-item" data-page="progress" onclick="switchPage('progress')">
+      <i class="fas fa-chart-line"></i><span>প্রগ্রেস</span>
+    </div>
+    <div class="nav-item" data-page="journal" onclick="switchPage('journal')">
+      <i class="fas fa-book"></i><span>জার্নাল</span>
+    </div>
+    <div class="nav-item" data-page="help" onclick="switchPage('help')">
+      <i class="fas fa-life-ring"></i><span>সাহায্য</span>
+    </div>
+  </nav>
+</div>
+
+<!-- চ্যালেঞ্জ ডিটেইল মোডাল -->
+<div class="modal-overlay" id="ch-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-ch-name"></div>
+    <div class="modal-streak-big" id="modal-ch-streak">0</div>
+    <div style="font-size:13px;color:var(--fg3);text-align:center;margin-bottom:4px">দিন ধরে চলছে</div>
+    <div class="modal-stats">
+      <div class="modal-stat">
+        <div class="modal-stat-val" id="modal-hours">0</div>
+        <div class="modal-stat-lbl">ঘন্টা</div>
+      </div>
+      <div class="modal-stat">
+        <div class="modal-stat-val" id="modal-best">0</div>
+        <div class="modal-stat-lbl">সেরা রেকর্ড</div>
+      </div>
+      <div class="modal-stat">
+        <div class="modal-stat-val" id="modal-relapses">0</div>
+        <div class="modal-stat-lbl">রিল্যাপস</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--fg3);font-family:'JetBrains Mono',monospace;text-align:center;margin-bottom:16px" id="modal-timer"></div>
+    <button class="reset-btn" id="modal-reset" onclick="resetChallenge()">
+      <i class="fas fa-rotate-left"></i> রিল্যাপস হয়েছে — রিসেট করি
+    </button>
+  </div>
+</div>
+
+<!-- ইমার্জেন্সি মোডাল -->
+<div class="em-modal" id="em-modal">
+  <button class="em-close" onclick="closeEmergency()"><i class="fas fa-times"></i></button>
+  <div style="text-align:center;margin-top:20px">
+    <div style="font-size:14px;color:var(--red);font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">জরুরি মোটিভেশন</div>
+    <div class="em-quote-big" id="em-quote"></div>
+    <div class="em-author-big" id="em-author"></div>
+  </div>
+  <div class="em-harm-list" id="em-harms"></div>
+  <div id="em-tips"></div>
+  <button class="btn btn-ghost btn-sm em-refresh" onclick="refreshEmergency()">
+    <i class="fas fa-refresh"></i> আরো দেখাও
+  </button>
+</div>
+
+<script>
+/* ============================================
+   ডেটা: মাইলস্টোন, উক্তি, অপকারিতা
+   ============================================ */
+const CHALLENGES = {
+  smoking: {
+    name: 'নন স্মোকিং', icon: 'fa-smoking', cls: 'smoking',
+    color: '#ef4444', glow: 'rgba(239,68,68,.25)',
+    milestones: [
+      { h: 0.33, t: '২০ মিনিট', d: 'হার্ট রেট ও রক্তচাপ স্বাভাবিক হতে শুরু করে' },
+      { h: 8, t: '৮ ঘন্টা', d: 'রক্তে অক্সিজেন লেভেল স্বাভাবিকে ফিরে আসে, কার্বন মনোক্সাইড অর্ধেক হ্রাস পায়' },
+      { h: 24, t: '২৪ ঘন্টা', d: 'হার্ট অ্যাটাকের ঝুঁকি কমতে শুরু করে' },
+      { h: 48, t: '৪৮ ঘন্টা', d: 'নিকোটিন সম্পূর্ণ দেহ থেকে বের হতে শুরু করে' },
+      { h: 72, t: '৩ দিন', d: 'শ্বাসনালীর প্রদাহ কমে, শ্বাস নিতে সুবিধা হয়' },
+      { h: 336, t: '২ সপ্তাহ', d: 'রক্ত সঞ্চালন উন্নত হয়, হাঁটাহাঁটিতে সুবিধা হয়' },
+      { h: 720, t: '১ মাস', d: 'ফুসফুসের কার্যক্ষমতা প্রায় ৩০% বৃদ্ধি পায়, কাশি কমে' },
+      { h: 2160, t: '৩ মাস', d: 'ফুসফুস ও হার্টের কার্যক্ষমতা উল্লেখযোগ্যভাবে উন্নত হয়' },
+      { h: 4320, t: '৬ মাস', d: 'কাশি, দুর্বলতা ও শ্বাসকষ্ট উল্লেখযোগ্যভাবে হ্রাস পায়' },
+      { h: 8760, t: '১ বছর', d: 'করোনারি হার্ট ডিজিজের ঝুঁকি অর্ধেকে নেমে আসে' },
+      { h: 43800, t: '৫ বছর', d: 'স্ট্রোকের ঝুঁকি নন-স্মোকারদের মতো একই হয়' },
+    ]
+  },
+  masturbation: {
+    name: 'নো ফ্যাপ', icon: 'fa-hand-fist', cls: 'masturbation',
+    color: '#f59e0b', glow: 'rgba(245,158,11,.25)',
+    milestones: [
+      { h: 24, t: '১ দিন', d: 'ডোপামাইন রিসেপ্টর রিসেট শুরু হয়, মস্তিষ্ক স্বাভাবিক হতে থাকে' },
+      { h: 72, t: '৩ দিন', d: 'শারীরিক শক্তি ও মানসিক ফোকাস বৃদ্ধি অনুভব করতে পারো' },
+      { h: 168, t: '১ সপ্তাহ', d: 'আত্মবিশ্বাস বৃদ্ধি, সামাজিক উদ্বেগ কমতে শুরু করে' },
+      { h: 336, t: '২ সপ্তাহ', d: 'মস্তিষ্কের রিওয়ার্ড সিস্টেম পুনর্গঠিত হতে থাকে' },
+      { h: 720, t: '১ মাস', d: 'ত্বকের উজ্জ্বলতা বৃদ্ধি, মেজাজ অনেক বেশি স্থিতিশীল হয়' },
+      { h: 2160, t: '৩ মাস', d: 'ডোপামাইন সংবেদনশীলতা উল্লেখযোগ্যভাবে পুনরুদ্ধার হয়' },
+      { h: 4320, t: '৬ মাস', d: 'গভীর মানসিক স্থিতিশীলতা ও আত্ম-নিয়ন্ত্রণ লাভ' },
+      { h: 8760, t: '১ বছর', d: 'সম্পূর্ণ মানসিক ও শারীরিক পুনর্জন্ম অনুভব করো' },
+    ]
+  },
+  porn: {
+    name: 'নো পর্ণ', icon: 'fa-eye-slash', cls: 'porn',
+    color: '#a78bfa', glow: 'rgba(167,139,250,.25)',
+    milestones: [
+      { h: 24, t: '১ দিন', d: 'মস্তিষ্কে কৃত্রিম ডোপামাইন স্পাইক বন্ধ হয়' },
+      { h: 72, t: '৩ দিন', d: 'রিয়েল লাইফে মানুষের প্রতি আকর্ষণ বৃদ্ধি পেতে শুরু করে' },
+      { h: 168, t: '১ সপ্তাহ', d: 'ঘুমের মান উন্নত হয়, সকালে তাজা অনুভব হয়' },
+      { h: 336, t: '২ সপ্তাহ', d: 'সামাজিক উদ্বেগ কমে, মানুষের সাথে কথা বলতে সুবিধা হয়' },
+      { h: 720, t: '১ মাস', d: 'মস্তিষ্কের ফ্রন্টাল লব পুনরুজ্জীবিত হতে থাকে — সিদ্ধান্ত গ্রহণ উন্নত হয়' },
+      { h: 2160, t: '৩ মাস', d: 'সম্পর্কের সাথে গভীর সংযোগ তৈরি হতে শুরু করে' },
+      { h: 4320, t: '৬ মাস', d: 'আবেগনিয়ন্ত্রণ ও মনোযোগ শক্তি উল্লেখযোগ্যভাবে বৃদ্ধি পায়' },
+      { h: 8760, t: '১ বছর', d: 'মস্তিষ্কের রিওয়ার্ড সিস্টেম সম্পূর্ণ পুনরুদ্ধার হয়' },
+    ]
+  }
+};
+
+const QUOTES = [
+  { t: 'তোমার শরীর তোমার একমাত্র বাসস্থান — একে পবিত্র রাখো।', a: 'জিম রোহন' },
+  { t: 'শৃঙ্খলা স্বাধীনতার সেতু।', a: 'আরিস্টটল' },
+  { t: 'যে নিজেকে জয় করতে পারে না, সে অন্যকে জয় করতে পারে না।', a: 'মহাত্মা গান্ধী' },
+  { t: 'তুমি যা বারবার করো, তাই তোমার পরিচয় হয়ে যায়। তাই মানসম্মত কাজ করো।', a: 'উইল রজার্স' },
+  { t: 'প্রতিটি মুহূর্ত একটি নতুন সুযোগ।', a: 'টি.এস. ইলিয়ট' },
+  { t: 'সফলতা চূড়ান্ত নয়, ব্যর্থতাও চূড়ান্ত নয় — এগিয়ে যাওয়াটাই গুরুত্বপূর্ণ।', a: 'উইনস্টন চার্চিল' },
+  { t: 'নিয়ন্ত্রণ তাকেই দেওয়া হয় যে নিজেকে নিয়ন্ত্রণ করতে পারে।', a: 'কনফুসিয়াস' },
+  { t: 'তুমি যখন ছেড়ে দেওয়ার মুহূর্তেই সবচেয়ে বেশি কাছে থাকো।', a: 'প্রবাদ' },
+  { t: 'আমাদের সবচেয়ে বড় জয় হলো নিজেকে পরাজিত না করা।', a: 'প্লেটো' },
+  { t: 'তোমার ভবিষ্যৎ তোমার অভ্যাসের উপর নির্ভর করে, তোমার ইচ্ছার উপর নয়।', a: 'জন ড্রাইডেন' },
+  { t: 'কষ্ট অস্থায়ী, পরাজয় স্থায়ী — যদি তুমি ছেড়ে দাও।', a: 'ল্যান্স আর্মস্ট্রং' },
+  { t: 'শক্তি সবসময় আসে না, কিন্তু তুমি সবসময় শক্তিশালী হতে পারো।', a: 'রোমান হ্যারিসন' },
+  { t: 'তোমার মন একটি বাগান, তোমার চিন্তা হলো বীজ — সুন্দর ফুল ফোটাও।', a: 'বুদ্ধ' },
+  { t: 'যে মানুষ তার নিজের উপর বিজয়ী, সে পৃথিবীর সবচেয়ে শক্তিশালী যোদ্ধা।', a: 'সুন তজু' },
+  { t: 'অতীত তোমাকে সংজ্ঞায়িত করে না, তোমার বর্তমান কর্ম তোমার ভবিষ্যৎ তৈরি করে।', a: 'অজানা' },
+];
+
+const HARMS = {
+  smoking: [
+    'প্রতি বছর বিশ্বে ৮০ লক্ষেরও বেশি মানুষ তামাকজনিত রোগে মারে — এটি সম্পূর্ণ প্রতিরোধযোগ্য।',
+    'সিগারেটে ৭,০০০ এরও বেশি রাসায়নিক পদার্থ আছে, যার মধ্যে ৭০টি ক্যান্সার সৃষ্টি করে।',
+    'ধূমপানে ফুসফুসের ক্যান্সারের ঝুঁকি নন-স্মোকারদের তুলনায় ১৫ থেকে ৩০ গুণ বেশি।',
+    'ধূমপানকারীদের গড় আয়ু ১০-১৫ বছর কম হয়।',
+    'প্রতিটি সিগারেট তোমার জীবন থেকে ১১ মিনিট কেড়ে নেয়।',
+    'ধূমপান ত্বকের অকাল বার্ধক্য ঘটায়, রিংকল ও দাগ তৈরি করে।',
+    'নিষ্ক্রিয় ধূমপানেও ক্যান্সারের ঝুঁকি থাকে — তোমার পরিবারকেও তুমি ক্ষতি করছো।',
+  ],
+  masturbation: [
+    'অতিরিক্ত মাস্টারবেশন মস্তিষ্কের ডোপামাইন রিসেপ্টরকে ক্ষয় করে — সাধারণ আনন্দেও সুখ অনুভব করতে পারো না।',
+    'এটি তোমার শক্তি, ফোকাস ও স্মৃতিশক্তি দুর্বল করে।',
+    'ঘুমের মান নষ্ট করে, দিনে ক্লান্তি অনুভব করায়।',
+    'আত্মবিশ্বাস ও আত্মসম্মান কমিয়ে দেয়, সামাজিক উদ্বেগ বাড়ায়।',
+    'এটি আসক্তির লুপ তৈরি করে — একবার শুরু করলে বন্ধ করা কঠিন হয়ে যায়।',
+    'শারীরিক দুর্বলতা, চোখের নিচে কালি ও ব্যাক পেইন হতে পারে।',
+  ],
+  porn: [
+    'পর্ণ মস্তিষ্কের ফ্রন্টাল লবকে ক্ষয় করে — সিদ্ধান্ত গ্রহণ ও ইমপালস কন্ট্রোল দুর্বল হয়।',
+    'এটি বাস্তব সম্পর্কের ক্ষমতা ধ্বংস করে — অসংখ্য সম্পর্ক ভেঙেছে এর কারণে।',
+    'পর্ণ আসক্তি ডোপামাইন ডিসরেগুলেশন ঘটায় — সাধারণ জিনিসে আনন্দ পাওয়া কঠিন হয়।',
+    'এটি অবাস্তব যৌন প্রত্যাশা তৈরি করে যা বাস্তবতায় কখনো পূরণ হয় না।',
+    'গবেষণায় দেখা গেছে পর্ণ দেখা মস্তিষ্কের গ্রে ম্যাটার কমায় — মানসিক সক্ষমতা হ্রাস পায়।',
+    'এটি লজ্জা, দোষ ও বিষণ্ণতার চক্র তৈরি করে যা আত্মহত্যার চিন্তাও জন্মাতে পারে।',
+    'পর্ণ শিল্প প্রায়ই মানব পাচার ও শোষণের সাথে যুক্ত — তুমি দেখলে চাকরি দিচ্ছো।',
+  ]
+};
+
+const EMERGENCY_TIPS = [
+  'এখনই উঠে দাঁড়াও এবং ২০টি পুশআপ করো — শরীরকে ব্যস্ত রাখো',
+  'ঠান্ডা পানি দিয়ে মুখ ধোয় এবং মুখে রাখো ৩০ সেকেন্ড — এটি ভ্যাগাস নার্ভ স্টিমুলেট করে',
+  'এখনই বাইরে বেরিয়ে যাও, ১৫ মিনিট হাঁটাহাঁটি করো',
+  'তোমার কাছে বিশ্বাসযোগ্য কাউকে কল করো বা মেসেজ করো',
+  'গোসল করে নাও — ঠান্ডা বা গরম পানি দিয়ে',
+  'একটি কঠিন বই পড়া শুরু করো বা কুরআন/গীতা/বাইবেল পড়ো',
+  'ধ্যান করো — ৫ মিনিট চোখ বন্ধ করে শ্বাসে মন দাও',
+  'তোমার লক্ষ্যের কাগজটা বের করো এবং আবার পড়ো',
+  'মোবাইল ফোন ১ ঘন্টার জন্য বন্ধ রাখো',
+  'বাজানা বা গান বাজাও — জোরে গান গাও',
+];
+
+/* ============================================
+   স্টেট ম্যানেজমেন্ট
+   ============================================ */
+let state = {
+  challenges: {},  // { smoking: { start: timestamp, best: days, relapses: count }, ... }
+  dailyCigs: 0,
+  cigCost: 0,
+  journals: [],    // [{ date, mood, text }]
+  selectedChallenges: [],
+  currentModalCh: null,
+  progressFilter: 'all'
+};
+
+function loadState() {
+  try {
+    const s = localStorage.getItem('challenge_app_state');
+    if (s) state = { ...state, ...JSON.parse(s) };
+  } catch(e) {}
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('challenge_app_state', JSON.stringify(state));
+  } catch(e) {}
+}
+
+/* ============================================
+   অনবোর্ডিং
+   ============================================ */
+function onbNext(step) {
+  // ধাপ ১ থেকে ২ তে যাওয়ার সময় ভ্যালিডেশন
+  if (step === 2) {
+    const selected = document.querySelectorAll('.onb-chip.selected');
+    if (selected.length === 0) {
+      showToast('কমপক্ষে একটি চ্যালেঞ্জ বেছে নাও', 'error');
+      return;
+    }
+    // সিগারেট না থাকলে ধাপ ২ স্কিপ
+    const hasSmoking = [...selected].some(c => c.dataset.ch === 'smoking');
+    if (!hasSmoking) {
+      step = 3;
+    }
+  }
+  document.querySelectorAll('.onb-step').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.onb-step[data-step="${step}"]`).classList.add('active');
+}
+
+function toggleChip(el) {
+  el.classList.toggle('selected');
+}
+
+function startApp() {
+  const selected = [...document.querySelectorAll('.onb-chip.selected')].map(c => c.dataset.ch);
+  state.selectedChallenges = selected;
+  state.dailyCigs = parseInt(document.getElementById('inp-daily').value) || 0;
+  state.cigCost = parseFloat(document.getElementById('inp-cost').value) || 0;
+
+  const now = Date.now();
+  selected.forEach(ch => {
+    if (!state.challenges[ch]) {
+      state.challenges[ch] = { start: now, best: 0, relapses: 0 };
+    }
+  });
+
+  saveState();
+  document.getElementById('onboarding').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  initApp();
+}
+
+/* ============================================
+   অ্যাপ ইনিশিয়ালাইজেশন
+   ============================================ */
+function initApp() {
+  renderHomeCards();
+  renderProgressFilters();
+  renderTimeline();
+  renderJournal();
+  renderHelpContent();
+  setDailyQuote();
+  updateAllTimers();
+  setInterval(updateAllTimers, 1000);
+
+  // প্রতিদিন কোট পরিবর্তন
+  const lastQuoteDate = localStorage.getItem('last_quote_date');
+  const today = new Date().toDateString();
+  if (lastQuoteDate !== today) {
+    localStorage.setItem('last_quote_date', today);
+    localStorage.removeItem('daily_quote_idx');
+  }
+  setDailyQuote();
+}
+
+/* ============================================
+   টাইমার ও ক্যালকুলেশন
+   ============================================ */
+function getStreakData(chKey) {
+  const ch = state.challenges[chKey];
+  if (!ch) return { days: 0, hours: 0, mins: 0, secs: 0, totalHours: 0, totalSecs: 0 };
+  const diff = Date.now() - ch.start;
+  const totalSecs = Math.floor(diff / 1000);
+  const days = Math.floor(totalSecs / 86400);
+  const hours = Math.floor((totalSecs % 86400) / 3600);
+  const mins = Math.floor((totalSecs % 3600) / 60);
+  const secs = totalSecs % 60;
+  const totalHours = diff / 3600000;
+  return { days, hours, mins, secs, totalHours, totalSecs };
+}
+
+function getMinStreak() {
+  let min = Infinity;
+  state.selectedChallenges.forEach(ch => {
+    const d = getStreakData(ch).days;
+    if (d < min) min = d;
+  });
+  return min === Infinity ? 0 : min;
+}
+
+function getMinStreakData() {
+  let minData = null;
+  let minDays = Infinity;
+  state.selectedChallenges.forEach(ch => {
+    const d = getStreakData(ch);
+    if (d.days < minDays) { minDays = d.days; minData = { ...d, key: ch }; }
+  });
+  return minData || { days: 0, hours: 0, mins: 0, secs: 0, totalHours: 0, key: '' };
+}
+
+function updateAllTimers() {
+  const minData = getMinStreakData();
+  const el = document.getElementById('streak-num');
+  const sub = document.getElementById('streak-sub');
+  const ring = document.getElementById('ring-fill');
+
+  if (el) el.textContent = minData.days;
+  if (sub) {
+    const h = String(minData.hours).padStart(2, '0');
+    const m = String(minData.mins).padStart(2, '0');
+    const s = String(minData.secs).padStart(2, '0');
+    sub.textContent = `${h}:${m}:${s}`;
+  }
+
+  // রিং প্রগ্রেস (৩০ দিনে ফুল সার্কেল)
+  const progress = Math.min(minData.days / 30, 1);
+  const circumference = 2 * Math.PI * 88; // ~553
+  if (ring) ring.style.strokeDashoffset = circumference * (1 - progress);
+
+  // সেভ কার্ড
+  const totalDays = minData.days + (minData.hours / 24);
+  const money = Math.round(state.dailyCigs * state.cigCost * totalDays);
+  const cigsAvoided = Math.round(state.dailyCigs * totalDays);
+  const lifeMins = Math.round(cigsAvoided * 11);
+
+  let bestDays = 0;
+  state.selectedChallenges.forEach(ch => {
+    const b = state.challenges[ch]?.best || 0;
+    if (b > bestDays) bestDays = b;
+  });
+
+  const smEl = document.getElementById('save-money');
+  const scEl = document.getElementById('save-cigs');
+  const slEl = document.getElementById('save-life');
+  const sbEl = document.getElementById('save-best');
+  if (smEl) smEl.textContent = money.toLocaleString('bn-BD');
+  if (scEl) scEl.textContent = cigsAvoided.toLocaleString('bn-BD');
+  if (slEl) slEl.textContent = lifeMins.toLocaleString('bn-BD');
+  if (sbEl) sbEl.textContent = bestDays;
+
+  // সেভ কার্ড লুকানো যদি সিগারেট চ্যালেঞ্জ না থাকে
+  const saveCard = document.getElementById('save-card');
+  if (saveCard) saveCard.style.display = state.selectedChallenges.includes('smoking') ? 'block' : 'none';
+
+  // চ্যালেঞ্জ কার্ড আপডেট
+  state.selectedChallenges.forEach(ch => {
+    const streakEl = document.getElementById(`ch-streak-${ch}`);
+    if (streakEl) {
+      const d = getStreakData(ch);
+      streakEl.textContent = `${d.days}d ${String(d.hours).padStart(2,'0')}h ${String(d.mins).padStart(2,'0')}m`;
+    }
+  });
+
+  // বেস্ট আপডেট
+  state.selectedChallenges.forEach(ch => {
+    const d = getStreakData(ch).days;
+    if (d > (state.challenges[ch]?.best || 0)) {
+      state.challenges[ch].best = d;
+      // মাইলস্টোন চেক
+      checkMilestones(ch, d);
+    }
+  });
+  saveState();
+}
+
+/* ============================================
+   মাইলস্টোন চেক ও কনফেটি
+   ============================================ */
+let celebratedMilestones = new Set();
+
+function checkMilestones(chKey, days) {
+  const ch = CHALLENGES[chKey];
+  if (!ch) return;
+  ch.milestones.forEach((m, i) => {
+    const mDays = m.h / 24;
+    if (days >= mDays) {
+      const key = `${chKey}_${i}`;
+      if (!celebratedMilestones.has(key)) {
+        celebratedMilestones.add(key);
+        showToast(`${ch.name}: ${m.t} অর্জন!`, 'success');
+        launchConfetti();
+      }
+    }
+  });
+}
+
+function launchConfetti() {
+  const colors = ['#10b981', '#34d399', '#f59e0b', '#ef4444', '#a78bfa', '#fbbf24'];
+  for (let i = 0; i < 40; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.top = -10 + 'px';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    piece.style.width = (6 + Math.random() * 8) + 'px';
+    piece.style.height = (6 + Math.random() * 8) + 'px';
+    piece.style.animationDuration = (2 + Math.random() * 1.5) + 's';
+    piece.style.animationDelay = (Math.random() * 0.5) + 's';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 4000);
+  }
+}
+
+/* ============================================
+   হোম পেজ রেন্ডার
+   ============================================ */
+function renderHomeCards() {
+  const container = document.getElementById('ch-cards');
+  container.innerHTML = '';
+  state.selectedChallenges.forEach(chKey => {
+    const ch = CHALLENGES[chKey];
+    const d = getStreakData(chKey);
+    const card = document.createElement('div');
+    card.className = `ch-card ${ch.cls}`;
+    card.onclick = () => openChModal(chKey);
+    card.innerHTML = `
+      <div class="ch-icon ${ch.cls}"><i class="fas ${ch.icon}"></i></div>
+      <div class="ch-info">
+        <div class="ch-name">${ch.name}</div>
+        <div class="ch-streak" id="ch-streak-${chKey}">${d.days}d ${String(d.hours).padStart(2,'0')}h ${String(d.mins).padStart(2,'0')}m</div>
+      </div>
+      <div class="ch-arrow"><i class="fas fa-chevron-right"></i></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function setDailyQuote() {
+  let idx = parseInt(localStorage.getItem('daily_quote_idx'));
+  if (isNaN(idx)) idx = Math.floor(Math.random() * QUOTES.length);
+  const q = QUOTES[idx];
+  document.getElementById('quote-text').textContent = q.t;
+  document.getElementById('quote-author').textContent = '— ' + q.a;
+  localStorage.setItem('daily_quote_idx', idx);
+}
+
+/* ============================================
+   চ্যালেঞ্জ মোডাল
+   ============================================ */
+function openChModal(chKey) {
+  state.currentModalCh = chKey;
+  const ch = CHALLENGES[chKey];
+  const d = getStreakData(chKey);
+  const chState = state.challenges[chKey];
+
+  document.getElementById('modal-ch-name').textContent = ch.name;
+  document.getElementById('modal-ch-streak').textContent = d.days;
+  document.getElementById('modal-ch-streak').style.background = `linear-gradient(135deg, ${ch.color}, ${ch.color}88)`;
+  document.getElementById('modal-ch-streak').style.webkitBackgroundClip = 'text';
+  document.getElementById('modal-hours').textContent = d.hours;
+  document.getElementById('modal-best').textContent = chState?.best || 0;
+  document.getElementById('modal-relapses').textContent = chState?.relapses || 0;
+  document.getElementById('modal-timer').textContent =
+    `${d.days}d ${String(d.hours).padStart(2,'0')}h ${String(d.mins).padStart(2,'0')}m ${String(d.secs).padStart(2,'0')}s`;
+
+  document.getElementById('ch-modal').classList.add('active');
+}
+
+document.getElementById('ch-modal').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('active');
+});
+
+function resetChallenge() {
+  if (!state.currentModalCh) return;
+  const chKey = state.currentModalCh;
+  state.challenges[chKey].start = Date.now();
+  state.challenges[chKey].relapses = (state.challenges[chKey].relapses || 0) + 1;
+  celebratedMilestones.clear();
+  saveState();
+  document.getElementById('ch-modal').classList.remove('active');
+  showToast('রিসেট হয়েছে — আবার শুরু করো, হাল ছাড়ো না!', 'error');
+  updateAllTimers();
+  renderTimeline();
+}
+
+/* ============================================
+   প্রগ্রেস পেজ
+   ============================================ */
+function renderProgressFilters() {
+  const container = document.getElementById('progress-filters');
+  container.innerHTML = '';
+  const filters = [{ key: 'all', name: 'সব' }];
+  state.selectedChallenges.forEach(ch => {
+    filters.push({ key: ch, name: CHALLENGES[ch].name });
+  });
+  filters.forEach(f => {
+    const btn = document.createElement('button');
+    btn.className = `tab-filter ${f.key === state.progressFilter ? 'active' : ''}`;
+    btn.textContent = f.name;
+    btn.onclick = () => {
+      state.progressFilter = f.key;
+      renderProgressFilters();
+      renderTimeline();
+    };
+    container.appendChild(btn);
+  });
+}
+
+function renderTimeline() {
+  const container = document.getElementById('timeline');
+  container.innerHTML = '';
+  const filter = state.progressFilter;
+  const chKeys = filter === 'all' ? state.selectedChallenges : [filter];
+
+  let allMilestones = [];
+  chKeys.forEach(chKey => {
+    const ch = CHALLENGES[chKey];
+    const d = getStreakData(chKey);
+    ch.milestones.forEach((m, i) => {
+      allMilestones.push({ ...m, chKey, chName: ch.name, color: ch.color, idx: i, currentHours: d.totalHours });
+    });
+  });
+  allMilestones.sort((a, b) => a.h - b.h);
+
+  let nextFound = false;
+  allMilestones.forEach(m => {
+    const done = m.currentHours >= m.h;
+    const isNext = !done && !nextFound;
+    if (isNext) nextFound = true;
+
+    const item = document.createElement('div');
+    item.className = `tl-item ${done ? 'done' : isNext ? 'next' : 'locked'}`;
+    item.innerHTML = `
+      <div class="tl-dot">${done ? '<i class="fas fa-check"></i>' : isNext ? '<i class="fas fa-arrow-up"></i>' : ''}</div>
+      <div class="tl-title">${m.t} — ${m.chName}</div>
+      <div class="tl-desc">${m.d}</div>
+    `;
+    container.appendChild(item);
+  });
+}
+
+/* ============================================
+   জার্নাল পেজ
+   ============================================ */
+let selectedMood = 0;
+
+function selectMood(el) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMood = parseInt(el.dataset.mood);
+}
+
+function renderJournal() {
+  const dateEl = document.getElementById('journal-date');
+  const now = new Date();
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  dateEl.textContent = now.toLocaleDateString('bn-BD', options);
+
+  // আজকের এন্ট্রি লোড
+  const today = now.toDateString();
+  const todayEntry = state.journals.find(j => j.date === today);
+  if (todayEntry) {
+    selectedMood = todayEntry.mood;
+    document.getElementById('journal-ta').value = todayEntry.text;
+    document.querySelectorAll('.mood-btn').forEach(b => {
+      if (parseInt(b.dataset.mood) === todayEntry.mood) b.classList.add('selected');
+    });
+  }
+
+  renderJournalEntries();
+}
+
+function saveJournal() {
+  if (selectedMood === 0) {
+    showToast('তোমার মুড সিলেক্ট করো', 'error');
+    return;
+  }
+  const text = document.getElementById('journal-ta').value.trim();
+  const today = new Date().toDateString();
+  const existingIdx = state.journals.findIndex(j => j.date === today);
+  const entry = { date: today, mood: selectedMood, text, timestamp: Date.now() };
+  if (existingIdx >= 0) {
+    state.journals[existingIdx] = entry;
+  } else {
+    state.journals.unshift(entry);
+  }
+  saveState();
+  showToast('জার্নাল সেভ হয়েছে', 'success');
+  renderJournalEntries();
+}
+
+function renderJournalEntries() {
+  const container = document.getElementById('journal-entries');
+  const moods = ['', '😟', '😐', '🙂', '😊', '🔥'];
+  // আজকের এন্ট্রি বাদ দিয়ে বাকিগুলো দেখাও
+  const today = new Date().toDateString();
+  const entries = state.journals.filter(j => j.date !== today).slice(0, 30);
+  container.innerHTML = '';
+  if (entries.length === 0) return;
+
+  entries.forEach((entry, i) => {
+    const d = new Date(entry.date);
+    const dateStr = d.toLocaleDateString('bn-BD', { month: 'short', day: 'numeric' });
+    const item = document.createElement('div');
+    item.className = 'je-item';
+    item.innerHTML = `
+      <div class="je-head">
+        <span class="je-date">${dateStr}</span>
+        <span class="je-mood">${moods[entry.mood] || ''}</span>
+      </div>
+      ${entry.text ? `<div class="je-text">${entry.text}</div>` : ''}
+      <div style="text-align:right;margin-top:6px">
+        <button class="je-delete" onclick="deleteJournal(${i})"><i class="fas fa-trash"></i> মুছুন</button>
+      </div>
+    `;
+    container.appendChild(item);
+  });
+}
+
+function deleteJournal(displayIdx) {
+  const today = new Date().toDateString();
+  const entries = state.journals.filter(j => j.date !== today);
+  if (entries[displayIdx]) {
+    const realIdx = state.journals.indexOf(entries[displayIdx]);
+    if (realIdx >= 0) {
+      state.journals.splice(realIdx, 1);
+      saveState();
+      renderJournalEntries();
+      showToast('এন্ট্রি মুছে ফেলা হয়েছে', 'success');
+    }
+  }
+}
+
+/* ============================================
+   হেল্প পেজ
+   ============================================ */
+function renderHelpContent() {
+  // অপকারিতা
+  const harmsContainer = document.getElementById('harms-list');
+  harmsContainer.innerHTML = '';
+  state.selectedChallenges.forEach(chKey => {
+    const harms = HARMS[chKey];
+    const chName = CHALLENGES[chKey].name;
+    // ২টি র‍্যান্ডম হার্ম দেখাও
+    const shuffled = [...harms].sort(() => Math.random() - 0.5).slice(0, 2);
+    shuffled.forEach(h => {
+      const card = document.createElement('div');
+      card.className = 'harm-card';
+      card.innerHTML = `<div class="harm-tag">${chName}</div><p>${h}</p>`;
+      harmsContainer.appendChild(card);
+    });
+  });
+
+  // মোটিভেশনাল উক্তি
+  const motivContainer = document.getElementById('motiv-list');
+  motivContainer.innerHTML = '';
+  const shuffledQ = [...QUOTES].sort(() => Math.random() - 0.5).slice(0, 3);
+  shuffledQ.forEach(q => {
+    const card = document.createElement('div');
+    card.className = 'motiv-card';
+    card.innerHTML = `<p>${q.t}</p><div class="motiv-author">— ${q.a}</div>`;
+    motivContainer.appendChild(card);
+  });
+}
+
+/* ============================================
+   ইমার্জেন্সি মোডাল
+   ============================================ */
+function openEmergency() {
+  const modal = document.getElementById('em-modal');
+  modal.classList.add('active');
+  populateEmergency();
+}
+
+function closeEmergency() {
+  document.getElementById('em-modal').classList.remove('active');
+}
+
+function refreshEmergency() {
+  populateEmergency();
+}
+
+function populateEmergency() {
+  // র‍্যান্ডম কোট
+  const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  document.getElementById('em-quote').textContent = q.t;
+  document.getElementById('em-author').textContent = '— ' + q.a;
+
+  // অপকারিতা — প্রতিটি চ্যালেঞ্জ থেকে ১টি করে
+  const harmsContainer = document.getElementById('em-harms');
+  harmsContainer.innerHTML = '';
+  state.selectedChallenges.forEach(chKey => {
+    const harms = HARMS[chKey];
+    const h = harms[Math.floor(Math.random() * harms.length)];
+    const card = document.createElement('div');
+    card.className = 'em-harm';
+    card.innerHTML = `<div class="em-harm-tag">${CHALLENGES[chKey].name}</div><p>${h}</p>`;
+    harmsContainer.appendChild(card);
+  });
+
+  // টিপস — ২টি
+  const tipsContainer = document.getElementById('em-tips');
+  tipsContainer.innerHTML = '';
+  const tips = [...EMERGENCY_TIPS].sort(() => Math.random() - 0.5).slice(0, 2);
+  tips.forEach(tip => {
+    const div = document.createElement('div');
+    div.className = 'em-tip';
+    div.innerHTML = `<div class="em-tip-tag">এখনই করো</div><p>${tip}</p>`;
+    tipsContainer.appendChild(div);
+  });
+}
+
+/* ============================================
+   ব্রিদিং এক্সারসাইজ
+   ============================================ */
+let breatheInterval = null;
+let breatheRunning = false;
+
+function toggleBreathe() {
+  const circle = document.getElementById('breathe-circle');
+  const btn = document.getElementById('breathe-btn');
+
+  if (breatheRunning) {
+    clearInterval(breatheInterval);
+    breatheRunning = false;
+    circle.className = 'breathe-circle';
+    circle.textContent = 'শুরু করো';
+    circle.style.transform = 'scale(1)';
+    btn.innerHTML = '<i class="fas fa-play"></i> শুরু';
+    return;
+  }
+
+  breatheRunning = true;
+  btn.innerHTML = '<i class="fas fa-stop"></i> থামাও';
+  let phase = 0; // 0=inhale, 1=hold, 2=exhale
+  const phases = ['inhale', 'hold', 'exhale'];
+  const labels = ['শ্বাস নাও...', 'ধরে রাখো...', 'ছেড়ে দাও...'];
+  const durations = [4000, 4000, 4000];
+
+  function nextPhase() {
+    circle.className = 'breathe-circle ' + phases[phase];
+    circle.textContent = labels[phase];
+    phase = (phase + 1) % 3;
+  }
+
+  nextPhase();
+  breatheInterval = setInterval(nextPhase, 4000);
+}
+
+/* ============================================
+   পেজ সুইচিং
+   ============================================ */
+function switchPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`page-${page}`).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.page === page);
+  });
+
+  // প্রগ্রেস পেজে গেলে রিফ্রেশ
+  if (page === 'progress') {
+    renderTimeline();
+  }
+  if (page === 'help') {
+    renderHelpContent();
+  }
+  if (page === 'journal') {
+    renderJournal();
+  }
+
+  // হেডার আপডেট
+  const titles = {
+    home: ['চ্যালেঞ্জ', 'তোমার পুনর্জন্মের যাত্রা'],
+    progress: ['প্রগ্রেস', 'তোমার স্বাস্থ্য উন্নতির পথ'],
+    journal: ['জার্নাল', 'তোমার অনুভূতি লিখে রাখো'],
+    help: ['সাহায্য', 'তাৎক্ষণিক মোটিভেশন ও সাহায্য'],
+  };
+  document.getElementById('header-title').textContent = titles[page][0];
+  document.getElementById('header-sub').textContent = titles[page][1];
+}
+
+/* ============================================
+   টোস্ট
+   ============================================ */
+function showToast(msg, type = '') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast ' + type;
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+/* ============================================
+   PWA ম্যানিফেস্ট
+   ============================================ */
+(function setupPWA() {
+  // SVG আইকন তৈরি
+  const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+    <rect width="512" height="512" rx="128" fill="#070b09"/>
+    <circle cx="256" cy="256" r="160" fill="none" stroke="#10b981" stroke-width="16"/>
+    <path d="M200 256 L240 296 L320 216" fill="none" stroke="#10b981" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+  const iconDataUrl = 'data:image/svg+xml;base64,' + btoa(iconSvg);
+
+  const manifest = {
+    name: 'চ্যালেঞ্জ - নন স্মোকিং | নো ফ্যাপ | নো পর্ণ',
+    short_name: 'চ্যালেঞ্জ',
+    start_url: location.href.split('?')[0],
+    display: 'standalone',
+    background_color: '#070b09',
+    theme_color: '#070b09',
+    orientation: 'portrait',
+    icons: [
+      { src: iconDataUrl, sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' }
+    ]
+  };
+
+  const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+  const link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = URL.createObjectURL(blob);
+  document.head.appendChild(link);
+
+  // অ্যাপল টাচ আইকন
+  const appleLink = document.createElement('link');
+  appleLink.rel = 'apple-touch-icon';
+  appleLink.href = iconDataUrl;
+  document.head.appendChild(appleLink);
+})();
+
+/* ============================================
+   ইনিশিয়াল চেক
+   ============================================ */
+loadState();
+if (state.selectedChallenges.length > 0) {
+  document.getElementById('onboarding').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  initApp();
+}
+</script>
+</body>
+</html>
